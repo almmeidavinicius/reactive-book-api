@@ -7,6 +7,10 @@ import reactor.core.publisher.Mono;
 public interface BookService {
 
     Flux<Book> findAll();
+
     Mono<Book> findById(String id);
+
     Mono<Book> save(Book book);
+
+    Mono<Book> deleteById(String id);
 }

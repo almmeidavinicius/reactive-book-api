@@ -18,6 +18,14 @@ public class BookHandler {
 
     private final BookService bookService;
 
+    public Mono<ServerResponse> save(ServerRequest request) {
+        final Mono<Book> book = request.bodyToMono(Book.class);
+        return ServerResponse
+                .status(HttpStatus.CREATED)
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(fromPublisher(book.flatMap(bookService::save), Book.class));
+    }
+
     public Mono<ServerResponse> findAll(ServerRequest request) {
         return ServerResponse
                 .status(HttpStatus.OK)
@@ -32,11 +40,10 @@ public class BookHandler {
                 .switchIfEmpty(ServerResponse.notFound().build());
     }
 
-    public Mono<ServerResponse> save(ServerRequest request) {
-        final Mono<Book> book = request.bodyToMono(Book.class);
-        return ServerResponse
-                .status(HttpStatus.CREATED)
-                .contentType(MediaType.APPLICATION_JSON)
-                .body(fromPublisher(book.flatMap(bookService::save), Book.class));
+    public Mono<ServerResponse> deleteById(ServerRequest request) {
+        return bookService
+                .deleteById(request.pathVariable("id"))
+                .flatMap(book -> ServerResponse.ok().body(Mono.just(book), Book.class))
+                .switchIfEmpty(ServerResponse.notFound().build());
     }
 }

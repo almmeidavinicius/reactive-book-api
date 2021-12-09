@@ -7,6 +7,8 @@ import project.reactivebookapi.repository.BookRepository;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import java.util.Optional;
+
 @Service
 @RequiredArgsConstructor
 public class BookServiceImpl implements BookService {
@@ -27,4 +29,16 @@ public class BookServiceImpl implements BookService {
     public Mono<Book> save(Book book) {
         return Mono.justOrEmpty(bookRepository.save(book));
     }
+
+    @Override
+    public Mono<Book> deleteById(String id) {
+        Optional<Book> optionalBook = bookRepository.findById(id);
+        if (optionalBook.isPresent()) {
+            bookRepository.deleteById(id);
+            return Mono.just(optionalBook.get());
+        } else {
+            return Mono.empty();
+        }
+    }
 }
+
