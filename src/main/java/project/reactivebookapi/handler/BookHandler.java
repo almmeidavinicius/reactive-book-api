@@ -10,7 +10,6 @@ import project.reactivebookapi.document.Book;
 import project.reactivebookapi.service.BookService;
 import reactor.core.publisher.Mono;
 
-import static org.springframework.web.reactive.function.BodyInserters.fromObject;
 import static org.springframework.web.reactive.function.BodyInserters.fromPublisher;
 
 @Component
