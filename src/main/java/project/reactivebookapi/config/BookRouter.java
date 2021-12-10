@@ -11,6 +11,7 @@ import project.reactivebookapi.handler.BookHandler;
 import static org.springframework.web.reactive.function.server.RequestPredicates.DELETE;
 import static org.springframework.web.reactive.function.server.RequestPredicates.GET;
 import static org.springframework.web.reactive.function.server.RequestPredicates.POST;
+import static org.springframework.web.reactive.function.server.RequestPredicates.PUT;
 import static org.springframework.web.reactive.function.server.RequestPredicates.accept;
 
 @Configuration
@@ -22,6 +23,7 @@ public class BookRouter {
                 .route(GET("/books").and(accept(MediaType.APPLICATION_JSON)), handler::findAll)
                 .andRoute(GET("/books/{id}").and(accept(MediaType.APPLICATION_JSON)), handler::findById)
                 .andRoute(POST("/books").and(accept(MediaType.APPLICATION_JSON)), handler::save)
-                .andRoute(DELETE("/books/{id}").and(accept(MediaType.APPLICATION_JSON)), handler::deleteById);
+                .andRoute(DELETE("/books/{id}").and(accept(MediaType.APPLICATION_JSON)), handler::deleteById)
+                .andRoute(PUT("/books/{id}").and(accept(MediaType.APPLICATION_JSON)), handler::update);
     }
 }
